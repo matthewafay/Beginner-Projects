@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static System.Console;
+
+namespace ReverseAString
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Type a word to reverse: ");
+            string word1 = System.Console.ReadLine();
+
+            System.Console.WriteLine("Original string: " + word1);
+            System.Console.WriteLine("Reversed String: " + ReverseString(word1));
+
+            //waiting
+            System.Console.ReadLine();
+        }
+
+        public static string ReverseString(string word)
+        {
+            //create string for lenght of word
+            char[] breakDown = new char[word.Length];
+
+            //put word in the array
+            int count = 0;
+            foreach (char c in word)
+            {
+                breakDown[count] = c;
+                count++;
+            }
+
+            //Reverse and add to string
+            string ReversedWord = null;
+            for (int i = (word.Length - 1); i > -1; i--)
+            {
+                ReversedWord += (breakDown[i]);
+            }
+
+            return ReversedWord;
+        }
+    }
+}
