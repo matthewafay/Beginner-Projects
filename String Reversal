@@ -23,7 +23,7 @@ namespace ReverseAString
 
         public static string ReverseString(string word)
         {
-            //create string for lenght of word
+            //create array for lenght of word
             char[] breakDown = new char[word.Length];
 
             //put word in the array
