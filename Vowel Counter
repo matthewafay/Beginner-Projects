@@ -1,0 +1,74 @@
+using System;
+
+namespace CountVowels
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //Console.WriteLine("Hello World!");
+
+            Console.WriteLine("Please put a word in for counting");
+            string word = Console.ReadLine();
+
+            int count = 0;
+            int numOfVowels = 0;
+            char[] breakDown = new char[word.Length];
+
+            foreach(char c in word)
+            {
+                breakDown[count] = c;
+                count++;
+            }
+
+            for(int i = 0; i < breakDown.Length; i++)
+            {
+                if (breakDown[i] == 'e')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'E')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'i')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'I')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'o')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'O')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'U')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'u')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'a')
+                {
+                    numOfVowels++;
+                }
+                else if (breakDown[i] == 'A')
+                {
+                    numOfVowels++;
+                }
+
+            }
+
+            Console.WriteLine("Number of vowels in word: " + numOfVowels);
+
+            Console.ReadLine();
+        }
+    }
+}
