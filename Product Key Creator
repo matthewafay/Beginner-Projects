@@ -1,0 +1,53 @@
+using System;
+
+namespace CD_Key_Generator
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            int numOfKeys = 5;
+            int numsInBlocks = 5;
+            int numOfBlocks = 8;
+
+            Convert.ToDouble(numOfKeys);
+            for(int i = 0; i < numOfKeys; i++)
+            {
+                Console.WriteLine(getKey(numsInBlocks, numOfBlocks));
+            }
+
+
+            //wait
+            Console.ReadLine();
+
+        }
+
+        public static string getKey(int numsInBlocks, int numOfBlocks)
+        {
+            string key = null;
+
+            for(int iOuter = 0; iOuter < numOfBlocks; iOuter++)
+            {
+                for (int i = 0; i < numsInBlocks; i++)
+                {
+                    key += Convert.ToString(getRandom());
+                }
+                
+                if(iOuter < numOfBlocks - 1)
+                {
+                    key += "-";
+                }
+            }
+           
+            
+           return key;
+        }
+        public static int getRandom()
+        {
+            System.Threading.Thread.Sleep(5);
+            Random singleString = new Random(DateTime.Now.Millisecond);
+            return singleString.Next(1, 9);
+        }
+    }
+}
