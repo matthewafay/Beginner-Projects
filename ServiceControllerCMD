@@ -1,0 +1,98 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ServiceProcess;
+
+namespace StopStartServicesRemote
+{
+    class ServiceControl
+    {
+        static void Main(string[] args)
+        {
+
+            Console.WriteLine("----Remote Service Controller by: Matt Fay----");
+            string input = null;
+            while (input != "exit")
+            {
+
+                //establish input and help
+                input = null;
+                Console.Write("CMD: ");
+                input = Console.ReadLine();
+                if(input == "help")
+                {
+                    Console.WriteLine("-How to use:");
+                    Console.WriteLine("-Arguments: [start/stop] [servicename] [stationip] ");
+                    Console.WriteLine("-Example: start spooler 192.168.192.12");
+                    Console.WriteLine("-You can leave the program by typing exit");
+                }
+
+                //split and send the command to functions
+                string[] cmd = input.Split(' ');
+
+                if(cmd[0] == "stop")
+                {
+                    serviceStop(cmd[2], cmd[1]);
+                }
+                else if(cmd[0] == "start")
+                {
+                    serviceStart(cmd[2], cmd[1]);
+                }
+                else
+                {
+                    Console.WriteLine("-" + cmd[0] + " is a invalid argument");
+                    Console.WriteLine("-You can type help for more information on program use");
+                }
+
+                //debug
+                Console.WriteLine();
+                Console.WriteLine("Dev: String split to array");
+                for (int i = 0; i < cmd.Length; i++)
+                {
+                    Console.WriteLine(cmd[i]);
+                }
+                Console.WriteLine("-------------");
+                Console.WriteLine();
+
+
+                //serviceStop(station, serviceName);
+
+            }
+
+        }
+
+        private static void serviceStop(string station, string serviceName)
+        {
+            ServiceController sc = new ServiceController(serviceName, station);
+            string isStarted = Convert.ToString(sc.Status);
+            
+            //prevent exception on already stopped service 
+            if (isStarted == "Stopped")
+            {
+                Console.WriteLine("+" + serviceName + " is already stopped on " + station);
+            }
+            else
+            {
+                sc.Stop();
+                Console.WriteLine("+" + serviceName + " has been told to stop");
+            }
+           
+            
+        }
+
+        private static void serviceStart(string station, string serviceName)
+        {
+            ServiceController sc = new ServiceController(serviceName, station);
+            sc.Start();
+            Console.WriteLine(Convert.ToString(sc.Status));
+        }
+
+        private static void serviceStatus(string station, string serviceName)
+        {
+            ServiceController sc = new ServiceController(serviceName, station);
+            Console.WriteLine(Convert.ToString(sc.Status));
+        }
+    }
+}
