@@ -1,0 +1,111 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+using static System.Console;
+
+namespace Ch08_ADONET
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            var connection = new SqlConnection(@"Data Source=laptop\sqlexpress;Initial Catalog=Northwind;Integrated Security=true;");
+            connection.Open();
+            WriteLine($"The connection is {connection.State}.");
+
+            WriteLine("Original list of categories:");
+            ListCategories(connection);
+
+            Write("Enter a new category name: ");
+            string name = ReadLine();
+            //the category name column only allows up to 15 chars chars so truncate if necessary
+            if (name.Length > 15) name = name.Substring(0, 15);
+            var insertCategory = new SqlCommand($"INSERT INTO Categories(CategoryName) VALUES(@NewCategoryName)", connection);
+            insertCategory.Parameters.AddWithValue("@NewCategoryName", name);
+            int rowsAffected = insertCategory.ExecuteNonQuery();
+            WriteLine($"{rowsAffected} rows were inserted.");
+
+            WriteLine("List of categories after inserting: ");
+            ListCategories(connection);
+
+            var deleteCategory = new SqlCommand($"DELETE FROM Categories WHERE CategoryName = @DeleteCategoryName", connection);
+            deleteCategory.Parameters.AddWithValue("@DeleteCategoryName", name);
+            rowsAffected = deleteCategory.ExecuteNonQuery();
+            WriteLine($"{rowsAffected} row(s) were deleted.");
+
+            WriteLine("List of categories after deleting:");
+            ListCategories(connection);
+
+            //added matt
+            Console.Write("Do you want to see the employees titles (y/n): ");
+            string titleInput = Console.ReadLine();
+            bool inputTitle = false;
+            if (titleInput == "y")
+            {
+                inputTitle = true;
+            }
+            else
+            {
+                inputTitle = false;
+            }
+            ListEmployees(connection, inputTitle);
+
+
+            connection.Close();
+            WriteLine($"The connection is {connection.State}.");
+
+
+            Console.ReadLine();
+
+            //a method we will call three times to list the categories 
+            
+        }
+        private static void ListCategories(SqlConnection connection)
+        {
+            var getCategories = new SqlCommand("SELECT CategoryID, CategoryName FROM Categories", connection);
+            SqlDataReader reader = getCategories.ExecuteReader();
+
+            //find out the index positions of the columsn that you want to read
+            int indexOfID = reader.GetOrdinal("CategoryID");
+            int indexOfName = reader.GetOrdinal("CategoryName");
+
+            while (reader.Read())
+            {
+                //use the typed getXxx methods to efficiently read the column values
+                WriteLine($"{reader.GetInt32(indexOfID)}: {reader.GetSqlString(indexOfName)}");
+            }
+            reader.Close();
+        }
+        private static void ListEmployees(SqlConnection connection, bool title)
+        {
+            //added matt
+            var getEmployees = new SqlCommand("SELECT EmployeeID, FirstName, LastName, Title FROM Employees", connection);
+            SqlDataReader reader = getEmployees.ExecuteReader();
+
+            int indexofID = reader.GetOrdinal("EmployeeID");
+            int indexofFirstName = reader.GetOrdinal("FirstName");
+            int indexofLastName = reader.GetOrdinal("LastName");
+            int indexofTitle = reader.GetOrdinal("Title");
+
+            Console.WriteLine();
+            Console.WriteLine("Here are the employees");
+            while (reader.Read())
+            {
+                if(title == false)
+                {
+                    WriteLine($"{reader.GetInt32(indexofID)} {reader.GetString(indexofFirstName)} {reader.GetString(indexofLastName)}");
+                }
+                else
+                {
+                    WriteLine($"{reader.GetInt32(indexofID)} {reader.GetString(indexofFirstName)} {reader.GetString(indexofLastName)} {reader.GetString(indexofTitle)}");
+                }
+
+            }
+            reader.Close();
+        }
+    }
+}
