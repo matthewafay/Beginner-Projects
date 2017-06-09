@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GetDayOfWeekConsole
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //get the day of the week based on date
+
+            Console.WriteLine("This program will tell you the day of the week based on a date.");
+            Console.WriteLine();
+            Console.Write("Enter a year YYYY: ");
+            int year = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter the month M: ");
+            int month = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter the day of the month DD: ");
+            int day = Convert.ToInt32(Console.ReadLine());
+
+            //Prepare for the string
+            DateTime dateValue = new DateTime(year, month, day);
+            Console.WriteLine($"That day was a {GetDayOfWeek((int)dateValue.DayOfWeek)}.");
+
+            //test method if needed
+            //testGetDayOfWeek();
+
+            Console.ReadLine();
+        }
+
+        private static void testGetDayOfWeek()
+        {
+            for (int i = 0; i <= 7; i++)
+            {
+                Console.WriteLine(GetDayOfWeek(i));
+            }
+        }
+
+        private static String GetDayOfWeek(int dateEntry)
+        {
+            string DayOfTheWeek = null;
+            switch (dateEntry)
+            {
+                case 7:
+                    DayOfTheWeek = "Sunday";
+                    break;
+                case 6:
+                    DayOfTheWeek = "Saturday";
+                    break;
+                case 5:
+                    DayOfTheWeek = "Friday";
+                    break;
+                case 4:
+                    DayOfTheWeek = "Thursday";
+                    break;
+                case 3:
+                    DayOfTheWeek = "Wednesday";
+                    break;
+                case 2:
+                    DayOfTheWeek = "Tuesday";
+                    break;
+                case 1:
+                    DayOfTheWeek = "Monday";
+                    break;
+                default:
+                    Console.WriteLine("Error in int handling for date");
+                    break;
+                    
+            }
+
+            return DayOfTheWeek;
+        }
+        
+    }
+}
